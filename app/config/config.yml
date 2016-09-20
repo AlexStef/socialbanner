@@ -1,0 +1,41 @@
+debug: true
+
+locale: fr
+
+db.options:
+    driver:   pdo_sqlite
+    path:     data/app.sqlite
+
+facebook:
+    key: YOUR_FACEBOOK_APP_KEY
+    secret: YOUR_FACEBOOK_APP_SECRET
+
+partners_api:
+    base_uri: https://api.creads-partners.com/v1/
+    connect_uri: https://connect.creads-partners.com/
+    app_id: YOUR_PARTNERS_APP_ID
+    app_secret: YOUR_PARTNERS_APP_SECRET
+    organization_gid: YOUR_PARTNERS_ORGANIZATION_GID
+
+    default_projects:
+        # Facebook Cover, add and edit to provide default projects
+        # Get the GIDs, available options, and price from Partners API
+        -
+            product:
+                gid: '56421809693d5'
+            options:
+                due: 2
+                mode: 'solo'
+                skill: 'conception'
+            price:
+                amount: 140.00
+                currency: 'EUR'
+            organization:
+                gid: '19c8d61ecbbd4'
+            description: 'Image de couverture Facebook au format <b>828x315</b>px.<br>'
+
+payment:
+    currency: EUR
+    payplug_key: YOUR_PAYPLUG_KEY
+
+require_channel: http

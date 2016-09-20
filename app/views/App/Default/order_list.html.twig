@@ -1,0 +1,43 @@
+{% extends 'App/_layout.html.twig' %}
+{% block content %}
+<div class="container">
+  <div class="well">
+     <div class="row">
+        <div class="col-xs-12">
+          <h1>{{'see_orders'|trans}}</h1>
+          <div class="list-group">
+            {% for project in projects %}
+              {% set storedProject = projectsMap[project.gid] %}
+            <a href="{{path('app_order_view', {id: storedProject.id } ) }}" class="list-group-item{% if highlighted|default(null) == project.gid %} list-group-item-warning{% endif %}">
+              <span class="badge">{{project.price.amount}} {{project.price.currency}} TTC</span>
+              <h4 class="list-group-item-heading">{{project.title}} <code>#{{project.short_code}}</code></h4>
+              <p class="list-group-item-text">
+                {% if storedProject.status == 'project.status.paid' %}
+                  {% if project.status == 'in_progress' or project.status == 'waiting_for_decision' %}
+                    <span class="label label-warning">{{'project_in_progress'|trans}}</span>
+                    <span data-toggle="tooltip" data-placement="top" title="{{'project_started'|trans}} {{project.started_at|date()|time_diff}}">{{ 'project_end_date'|trans({'%dateString%': project.deadline_at|date('d/m/Y'), '%hourString%': project.deadline_at|date('H:i')}) }}</span>
+                  {% elseif project.status == 'finished' or project.status == 'waiting_for_sources' %}
+                    <span class="label label-success">{{'project_finished'|trans}}</span> {{project.finished_at|date()|time_diff}}
+                  {% endif %}
+                {% elseif storedProject.status == 'project.status.waiting' %}
+                  <span class="label label-info">{{'project_waiting_payment'|trans}}</span>
+                {% else %}
+                  <span class="label label-default">{{'project_inactive'|trans}}</span>
+                {% endif %}
+              </p>
+            </a>
+            {% endfor %}
+          </div>
+          {% if not projects|length %}
+            <p class="text-center">
+              {{'project_empty_list_msg'|trans}}
+            </p>
+            <p class="text-center">
+              <a href="{{path('app_home')}}" class="btn btn-primary">{{'new_order'|trans}}</a>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+  </div>
+</div>
+{% endblock %}

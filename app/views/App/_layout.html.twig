@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SocialBanner</title>
+    <title>{% block title %}Partners Minisite{% endblock %}</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/assets/css/layout.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/dropzone.css">
+    <link rel="stylesheet" href="/assets/lib/lightbox/css/lightbox.min.css">
+    {% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{path('app_home')}}"><img src="/assets/img/socialbanner_logo.png" alt="SocialBanner"></a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-left">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li><a href="{{path('app_order_list')}}">{{ 'see_orders'|trans }}</a></li>
+        <li><a href="{{path('app_home')}}">{{ 'new_order'|trans }}</a></li>
+        {% endif %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li class="nav-user"><a href="#"><img class="nav-avatar" src="//graph.facebook.com/{{app.user.facebookId}}/picture?type=large">&nbsp;{{app.user.fullname}}</a></li>
+        <li><a href="{{path('logout', { '_csrf_token': '' }) }}">{{ 'logout'|trans }}</a></li>
+        {% else %}
+        <li><a href="{{path('login')}}" >{{ 'login'|trans }}</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% block alerts %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+    {% set alertTypeAvaillable = [ 'info', 'success', 'warning', 'danger'] %}
+      {% if app.session.flashBag is defined %}
+          {%- for alert in app.session.flashBag.get('payment') %}
+          <div class="alert alert-dismissible alert-danger" >
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              {% if alert.title %}<h4>{{ alert.title }}</h4>{% endif %}
+              {{ alert.message|raw }}
+          </div>
+          {%- endfor %}
+          {%- for alertType in alertTypeAvaillable %}
+              {%- for alert in app.session.flashBag.get(alertType) %}
+      <div class="alert alert-dismissible alert-{{ alertType }}" >
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          {% if alert.title is defined %}<h4>{{ alert.title }}</h4>{% endif %}
+          {{ alert.message|raw }}
+      </div>
+              {%- endfor %}
+          {%- endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{%- block content %}{% endblock %}
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 text-center">
+        <p><img src="/assets/img/payment_icons.png" alt="Secured Payment"></p>
+        <p>
+          <a class="github-button" href="https://github.com/creads/socialbanner" target="_blank" data-style="mega" aria-label="Fork creads/socialbanner on GitHub">Get the Source</a><br/>Powered by <a href="https://www.creads.fr" target="_blank">Creads</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+  {% block javascripts %}
+  <script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/lib/bootbox.min.js"></script>
+  <script src="/assets/js/lib/wysihtml.min.js"></script>
+  <script src="/assets/js/lib/wysihtml.toolbar.min.js"></script>
+  <script src="/assets/js/lib/wysihtml_simple.js"></script>
+  <script src="/assets/lib/lightbox/js/lightbox.min.js"></script>
+  <script src="/assets/js/lib/dropzone.js"></script>
+  {% endblock %}
+</html>

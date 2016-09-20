@@ -1,0 +1,19 @@
+{% extends 'App/_layout.html.twig' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="well text-center">
+            <h1>{{'payment_ask_title'|trans}}</h1>
+            <h2>"{{ partnersProject.title }}"</h2>
+            <p>{{'payment_ask_msg'|trans({'%amount%': payment_amount})|raw}}</p>
+            <form action="{{ payment_url }}" method="post">
+              <input name="amount" type="hidden" value="{{payment_amount}}">
+              <button type="submit" class="btn btn-primary"><i class="fa fa-credit-card-alt"></i> {{'payment_proceed'|trans}}</button>
+            </form>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

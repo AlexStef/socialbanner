@@ -1,0 +1,139 @@
+{% extends 'App/_layout.html.twig' %}
+{% block content %}
+<div class="container">
+  {% import 'App/Default/products.html.twig' as products %}
+  <div class="row">
+    {{ products.product(productId, false)}}
+  </div>
+    <!-- brief form -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="well">
+                <form class="form-horizontal" action="{{ path('app_order', {productId: productId}) }}" method="post">
+                  <fieldset>
+                    <legend>{{'brief_title'|trans}}</legend>
+                    <div class="form-group {% if form.title.vars.errors|length %}has-error{% endif %}">
+                      {{ form_label(form.title, 'Titre', { 'label_attr': {'class':'col-lg-2 control-label'}})}}
+                      <div class="col-lg-10">
+                        {{ form_widget(form.title) }}
+                        {{ form_errors(form.title) }}
+                      </div>
+                    </div>
+                    <div class="form-group {% if form.brief.vars.errors|length %}has-error{% endif %}">
+                      {{ form_label(form.brief, 'Brief', { 'label_attr': {'class':'col-lg-2 control-label'}})}}
+                      <div class="col-lg-10">
+                        {# Wysihtml toolbar #}
+                        <div id="wysihtml-toolbar" class="btn-toolbar" style="display: none;">
+                          <div class="btn-group">
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="bold" tabindex="-1"><i class="fa fa-bold"></i></a>
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="italic" tabindex="-1"><i class="fa fa-italic"></i></a>
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="underline" tabindex="-1"><i class="fa fa-underline"></i></a>
+                          </div>
+                          <div class="btn-group">
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="formatBlock" data-wysihtml-command-value="h1" tabindex="-1">Titre1</a>
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="formatBlock" data-wysihtml-command-value="h2" tabindex="-1">Titre2</a>
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="formatBlock" data-wysihtml-command-value="h3" tabindex="-1">Titre3</a>
+                          </div>
+                          <div class="btn-group">
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="insertUnorderedList" tabindex="-1"><i class="fa fa-list-ul"></i></a>
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="insertOrderedList" tabindex="-1"><i class="fa fa-list-ol"></i></a>
+                          </div>
+                          <div class="btn-group">
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="justifyLeft" tabindex="-1"><i class="fa fa-align-left"></i></a>
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="justifyCenter" tabindex="-1"><i class="fa fa-align-center"></i></a>
+                            <a class="btn btn-default btn-xs" data-wysihtml-command="justifyRight" tabindex="-1"><i class="fa fa-align-right"></i></a>
+                          </div>
+                        </div>
+                        {{ form_widget(form.brief, {'id' : 'wysihtml-brief'})}}
+                        {{ form_errors(form.brief) }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form_widget(form.files)}}
+                      <div class="col-lg-10 col-lg-offset-2">
+                        <div id="uploadZone" class="dropzone"></div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-lg-10 col-lg-offset-2">
+                        {{ form_widget(form._token) }}
+                        <button type="reset" class="btn btn-default">{{'cancel'|trans}}</button>
+                        <button type="submit" class="btn btn-primary" id="orderBtn">{{'submit'|trans}}</button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End brief form -->
+</div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script>
+
+{# Instantiate wysihtml editor (for rich text editing in the new order page) #}
+var editor = new wysihtml.Editor("wysihtml-brief", { // id of textarea element
+  toolbar:      "wysihtml-toolbar", // id of toolbar element
+  parserRules:  wysihtmlParserRules, // defined in parser rules set,
+  handleTabKey: false
+});
+jQuery(document).ready(function()
+{
+  Dropzone.autoDiscover = false;
+  var briefDropzone = new Dropzone(
+    "div#uploadZone",
+    {
+      url: "{{ path('partners_upload_file') }}",
+      maxFilesize: 50, // MB
+      addRemoveLinks: true,
+      acceptedFiles: '.jpg,.gif,.jpeg,.png,.pdf,.xls,.xlsx,.ppt,.pptx,.doc,.docx,.doc,.zip,.rar,.ai,.psd,.tiff,.eps,.indd,.ind,.idml,.indt,image/jpg, image/jpeg, image/png, image/gif, application/pdf, application/force-download, application/xls, application/xlsx, application/doc, application/docx, application/ppt, application/pptx,application/postscript, application/octet-stream, image/tiff, image/x-tiff, application/x-compressed, application/x-zip-compressed, application/zip, application/x-rar-compressed, application/x-indesign',
+      dictDefaultMessage: "{{ 'dropzone_default'|trans }}",
+      dictInvalidFileType: "{{ 'dropzone_invalid_file'|trans }}",
+      dictFileTooBig: "{{ 'dropzone_file_too_big'|trans }}",
+      dictResponseError: "{{ 'dropzone_server_error'|trans }}",
+      dictCancelUpload: "{{ 'dropzone_cancel_upload'|trans }}",
+      dictCancelUploadConfirmation:  "{{ 'dropzone_cancel_upload_confirm'|trans }}",
+      dictRemoveFile:  "{{ 'dropzone_remove_file'|trans }}"
+    }
+  );
+  briefDropzone.on("success", function(file) {
+    /* Add the file to the input files array */
+    var apiFile = JSON.parse(file.xhr.response);
+    if (apiFile.gid) {
+      var input = $('input#form_files');
+      var files = JSON.parse(input.val());
+      files.push({
+        gid: apiFile.gid
+      });
+      input.val(JSON.stringify(files));
+    }
+  });
+  briefDropzone.on("removedfile", function(file) {
+    /* Remove the file from the input files array */
+    var apiFile = JSON.parse(file.xhr.response);
+    if (apiFile.gid) {
+      var input = $('input#form_files');
+      var files = JSON.parse(input.val());
+      var fileToRemove = files.find(function(element) {
+        if (element.gid === apiFile.gid) {
+          return element;
+        }
+      });
+      files.splice(files.indexOf(fileToRemove), 1);
+      input.val(JSON.stringify(files));
+    }
+  });
+  briefDropzone.on("sending", function(file) {
+    /* Disable the form submit button */
+    $('button#orderBtn').prop('disabled', true);
+  });
+  briefDropzone.on("complete", function(file) {
+    /* Enable the form submit button */
+    $('button#orderBtn').prop('disabled', false);
+  });
+});
+
+</script>
+{% endblock %}

@@ -1,0 +1,78 @@
+see_orders: My orders
+new_order: Order
+login: Sign In
+logout: Logpit
+home_welcome: All your Facebook designs
+home_welcome_text: Order in 3 min and recieve customized designs in less than 24h
+login_msg: Please sign-in
+login_sub_msg: To use Social Banner service, you need to sign in.
+login_with_fb: Login with Facebook
+
+brief_title: Your brief
+
+cancel: Cancel
+submit: Submit
+
+payment_ask_title: Complete your order
+payment_ask_msg: To launch your project et complete the order, please proceed to the payment (<b>%amount%</b> €).
+payment_proceed: Proceed to secured payment
+
+project_in_progress: In progress
+project_started: Started
+project_finished: Finished
+project_inactive: Waiting for payment
+project_waiting_payment: Bank confirmation in progress
+
+project_empty_list_msg: It looks like you haven't started any order !
+
+comment_author_me: By <b>You</b>
+comment_author: By <b>%nickname%</b>
+
+project_needs_activation_main_msg: <b>This project is inactive</b>, please activate it by completing the payment.
+project_needs_activation_small_msg: If you have already done the payment, please wait or contact us.
+
+project_activate: Activate
+
+project_brief_header: Brief
+project_sources_header: Source files
+project_empty_sources: Choose a winner and finish the project to obtain source files
+
+project_empty_works_title: You have not recieved any creation yet
+project_empty_works_msg: As soon as a designer submits a creation, it will appear here
+
+project_choose_winner: Choose winner
+project_winner_label: Winner
+
+project_comment_header: Comment
+
+product_title_0: Cover photo
+product_title_1: Profile picture
+product_title_2: Feed illustration
+product_title_3: Campaign banner
+
+alert_bravo: Yay !
+alert_oops: Oops !
+alert_winner_chosen: Creation choice has been successfully sent ! You will shortly see here the source files in the dedicated panel.
+alert_winner_error: An error occured during the creation choice
+alert_comment_error: An error occured during the comment submission
+alert_payment_success: Your payment has been taken into account.
+alert_payment_success_msg: We are waiting for the transaction confirmaiton. This can take a few minutes.
+alert_payment_cancel: Canceled
+alert_payment_cancel_msg: The payment has been canceled, the order is not active. Please proceed again by <a href="%link%">clicking here</a>.
+alert_payment_error: Paiement refused
+alert_payment_error_msg: A payment has been refused, please proceed again by <a href="%link%">clicking here</a>.
+
+back_to_order_list: Back to my orders
+
+dropzone_default: Drop your attachments here
+dropzone_invalid_file: This filetype is not allowed.
+dropzone_file_too_big: The file is too big ({{filesize}} MB), {{maxFilesize}} MB is the limit
+dropzone_server_error: An error occured
+dropzone_cancel_upload: Cancel
+dropzone_cancel_upload_confirm: Confirm cancelation
+dropzone_remove_file: Remove
+
+brief_files: Attachments
+alert_payplug_error_msg: The payment service is temporarly unavailable, please try again later.
+
+project_end_date: Designs reception on %dateString% at %hourString%

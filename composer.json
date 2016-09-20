@@ -1,0 +1,39 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/AlexStef/saxulum-doctrine-orm-commands"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "silex/silex": "2.0.*",
+        "symfony/config": "~2.3",
+        "symfony/form": "~2.3",
+        "symfony/security": "~2.3",
+        "symfony/security-csrf": "~2.4",
+        "symfony/translation": "~2.3",
+        "symfony/validator": "~2.3",
+        "symfony/monolog-bridge": "~2.3",
+        "symfony/twig-bridge": "~2.3",
+        "swiftmailer/swiftmailer": "5.*",
+        "symfony/yaml": "~2.5",
+        "gigablah/silex-oauth": "~2.0@dev",
+        "creads/partners-api": "1.0.x-dev",
+        "twig/extensions": "~1.3",
+        "payplug/payplug-php": "~2.3",
+        "pimple/pimple": "3.*",
+        "dflydev/doctrine-orm-service-provider": "2.0.x-dev",
+        "saxulum/config-service-provider": "dev-master",
+        "ivoba/console-service-provider": "dev-master",
+        "symfony/console": "~3.0",
+        "saxulum/saxulum-doctrine-orm-commands": "dev-master"
+    },
+    "suggest": {
+        "ext-sqlite3": "Allows to store easily resources in database",
+        "ext-mysql": "Allows to store resources in database"
+    },
+    "autoload": {
+        "psr-0": { "Creads" : "src/" }
+    }
+}

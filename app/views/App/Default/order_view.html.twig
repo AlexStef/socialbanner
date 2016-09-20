@@ -1,0 +1,145 @@
+{# twig macro to render a single comment #}
+{% macro comment(comment) %}
+  <div class="row">
+    {% if not comment.mine %}
+      <div class="hidden-xs hidden-sm col-md-1">
+        <div class="comment-avatar" style="background-image: url('/assets/img/blank_avatar.jpg');"></div>
+      </div>
+    {% endif %}
+    <div class="col-sm-12 col-md-11">
+      <div class="bubble {% if comment.mine %}mine{% else %}theirs{% endif %}">
+        <div class="pointer"></div>
+        <p>{{comment.message}}</p>
+        <div class="bubble-date"><span>{% if comment.mine %}{{'comment_author_me'|trans|raw}}{% else %}{{'comment_author'|trans({'%nickname%': comment.nickname})|raw }}{% endif %}</b>, {{ comment.created_at|date()|time_diff }}</span></div>
+      </div>
+    </div>
+    {% if comment.mine %}
+      <div class="hidden-xs hidden-sm col-md-1">
+        <div class="comment-avatar mine" style="background-image: url('//graph.facebook.com/{{app.user.facebookId}}/picture?type=large');"></div>
+      </div>
+    {% endif %}
+  </div>
+{% endmacro %}
+{% import _self as order_view %}
+
+{# Page template begins here #}
+{% extends 'App/_layout.html.twig' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+                <h1>{{ project.title }}</h1>
+      </div>
+    </div>
+    {% if needsActivation %}
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="well text-center">
+          <p>{{'project_needs_activation_main_msg'|trans|raw}}</p>
+          <p><small>{{'project_needs_activation_small_msg'|trans|raw}}</small></p>
+          <p><a class="btn btn-primary btn-xs" href="{{path('payment_ask', {projectGid: project.gid})}}"><i class="fa fa-credit-card-alt"></i> {{'project_activate'|trans}}</a></p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-8">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            {{'project_brief_header'|trans}}
+          </div>
+          <div class="panel-body">
+            <p>
+              {{project.description|raw}}
+            </p>
+            {% if project.brief_files|length %}
+            <hr>
+            <p>{{ 'brief_files'|trans }}</p>
+            <ul class="list-unstyled">
+              {% for file in project.brief_files %}
+                <li><a href="{{ fileBaseUrl ~ file.filepath ~ '?access_token=' ~ fileToken }}" download>{{file.filename}}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            {{'project_sources_header'|trans}}
+          </div>
+          <div class="panel-body">
+            {% if not project.source_files or not project.source_files|length %}
+            <p><i>{{'project_empty_sources'|trans}}</i></p>
+            {% endif %}
+            <ul class="list-unstyled">
+              {% for file in project.source_files %}
+                <li><a href="{{ fileBaseUrl ~ file.filepath ~ '?access_token=' ~ fileToken }}" download>{{file.filename}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {% if  not works|length %}
+        <div class="col-xs-12">
+          <div class="well text-center">
+            <h1><img src="/assets/img/time.svg" alt=""></h1>
+            <h2>{{'project_empty_works_title'|trans}}</h2>
+            <p>{{'project_empty_works_msg'|trans}}</p>
+          </div>
+        </div>
+      {% endif %}
+      {% for work in works %}
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="work-thumbnail {% if project.winner and project.winner.gid == work.gid %}winner{% endif %}" style="{% if work.thumbnail is not null %}background-image: url('{{ imgBaseUrl ~ '/1024' ~ work.thumbnail.filepath ~ '?access_token=' ~ fileToken }}'); {% else %}background-image: url('{{ imgBaseUrl ~ '/1024' ~ work.image.filepath ~ '?access_token=' ~ fileToken }}');{% endif %}">
+          <a href="{{ imgBaseUrl ~ work.image.filepath ~ '?access_token=' ~ fileToken }}" class="work-zoom" data-lightbox="work">Loading...</a>
+          {% if not project.winner %}
+          <div class="work-thumbnail-menu">
+            <form id="winner-form" action="{{path('app_winner_select', {projectGid: project.gid})}}" method="post">
+              <input type="hidden" name="winner_gid" value="{{work.gid}}">
+              <button class="btn btn-link" type="submit" >{{'project_choose_winner'|trans}}</button>
+            </form>
+          </div>
+          {% elseif project.winner.gid == work.gid %}
+          <div class="work-thumbnail-menu">
+            <span class="text-success">{{'project_winner_label'|trans}}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <section id="comments">
+    {% for comment in comments %}
+      {{ order_view.comment(comment) }}
+    {% endfor %}
+    </section>
+    <div class="row">
+      <div class="col-xs-12">
+        <form id="comment-form" class="form-horizontal" action="{{ path('app_project_comment', {projectGid: project.gid}) }}" method="post">
+          <fieldset>
+            <legend>{{'project_comment_header'|trans}}</legend>
+            <div class="form-group">
+              <div class="col-lg-10">
+                {{ form_widget(commentForm.message)}}
+              </div>
+              <div class="col-lg-2">
+                {{ form_widget(commentForm._token) }}
+                {{ form_widget(commentForm.projectUri) }}
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-paper-plane-o"></i></button>
+              </div>
+            </div>
+            <div class="form-group">
+
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock %}
+

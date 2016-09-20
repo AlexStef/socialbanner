@@ -1,0 +1,78 @@
+see_orders: Mes commandes
+new_order: Commander
+login: Connexion
+logout: Déconnexion
+home_welcome: Tous vos visuels Facebook
+home_welcome_text: Commandez en 3min et recevez des créations sur mesure en moins de 24h
+login_msg: Connectez-vous
+login_sub_msg: Pour utiliser le service SocialBanner, veuillez vous connecter.
+login_with_fb: Se connecter avec Facebook
+
+brief_title: Votre brief
+
+cancel: Annuler
+submit: Envoyer
+
+payment_ask_title: Finalisez votre commande
+payment_ask_msg: Pour lancer le projet et finaliser la commande, veuillez procéder au paiement (<b>%amount%</b> €).
+payment_proceed: Procéder au paiment sécurisé
+
+project_in_progress: En cours
+project_started: Lancé
+project_finished: Terminé
+project_inactive: En attente de paiement
+project_waiting_payment: Confirmation bancaire en cours
+
+project_empty_list_msg: Il semble que vous n'ayez encore fait aucune commande !
+
+comment_author_me: Par <b>Vous</b>
+comment_author: Par <b>%nickname%</b>
+
+project_needs_activation_main_msg: <b>Ce projet est inactif</b>, veuillez l'activer en finalisant le paiement pour continuer et recevoir des créations.
+project_needs_activation_small_msg: Si vous avez déjà effectué le paiement, veuillez patienter ou nous contacter.
+
+project_activate: Activer
+
+project_brief_header: Brief
+project_sources_header: Fichiers Sources
+project_empty_sources: Choisissez un gagnant et terminez le projet pour obtenir des fichiers sources
+
+project_empty_works_title: Vous n'avez encore reçu aucune proposition
+project_empty_works_msg: Dès qu'un créatif vous soumettra une création, vous la verrez aparaitre ici
+
+project_choose_winner: Déclarer vainqueur
+project_winner_label: Vainqueur
+
+project_comment_header: Commenter
+
+product_title_0: Photo de couverture
+product_title_1: Photo de profil
+product_title_2: Visuel de feed
+product_title_3: Banner pour campagne
+
+alert_bravo: Bravo !
+alert_oops: Oops !
+alert_winner_chosen: Le choix de la creation a été pris en compte ! Vous retrouverez d'ici peu de temps les fichiers sources dans l'encart prévu à cet effet.
+alert_winner_error: Une erreur est survenu pendant le choix de la creation
+alert_comment_error: Une erreur est survenu pendant l'envoi du commentaire
+alert_payment_success: Votre paiement a bien été pris en compte.
+alert_payment_success_msg: Nous attendons la confirmation de la transaction. Cela peut prendre quelques minutes.
+alert_payment_cancel: Annulation
+alert_payment_cancel_msg: Le paiement a été annulé, la commande n'est pas effective. Nous vous invitons à le relancer en <a href="%link%">cliquant ici</a>.
+alert_payment_error: Paiement refusé
+alert_payment_error_msg: 'Un paiement a été refusé, nous vous invitons à le relancer en <a href="%link%">cliquant ici</a>.'
+
+back_to_order_list: Retour à mes commandes
+
+alert_payplug_error_msg: Le système de paiement est temporairement indisponible, veuillez retenter ultérieurement.
+
+dropzone_default: Déposez vos pièces jointes du brief ici
+dropzone_invalid_file: Ce type de fichier n'est pas autorisé.
+dropzone_file_too_big: Ce fichier est trop volumineux ({{filesize}} Mo), {{maxFilesize}} Mo maximum autorisés
+dropzone_server_error: Une erreur est survenue
+dropzone_cancel_upload: Annuler
+dropzone_cancel_upload_confirm: Confirmer annulation
+dropzone_remove_file: Supprimer
+
+brief_files: Pièces jointes
+project_end_date: Réception des créations le %dateString% à %hourString%

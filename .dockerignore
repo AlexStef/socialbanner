@@ -1,0 +1,11 @@
+*.DS_Store
+*.git/
+*.gitignore
+
+app/data
+app/cache
+vendor
+
+web/.htaccess
+
+.htaccess

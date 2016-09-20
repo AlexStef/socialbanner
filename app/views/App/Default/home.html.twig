@@ -1,0 +1,27 @@
+{% extends 'App/_layout.html.twig' %}
+{% block content %}
+{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+<div class="fullwidth-jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="home-content">
+                  <h1>{{'home_welcome'|trans}} </h1>
+                  <hr>
+                  <p><b>{{'home_welcome_text'|trans}}</b></p>
+                  <p><a class="btn btn-primary" href="{{path('login')}}">{{'new_order'|trans}}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="container">
+    {% import 'App/Default/products.html.twig' as products %}
+    <div class="row">
+    {% for i in 0..3 %}
+        {{ products.product(i, true)}}
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

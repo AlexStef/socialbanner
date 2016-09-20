@@ -1,0 +1,43 @@
+{% macro product(id, link) %}
+{% if id == 0 %}
+    {% set elementId = 'product-cover' %}
+    {% set inner_html %}
+        <span class="corner">140 €</span>
+    {% endset %}
+{% elseif id == 1 %}
+    {% set elementId = 'product-profile-picture' %}
+    {% set inner_html %}
+       <span class="corner">140 €</span>
+   {% endset %}
+{% elseif id == 2 %}
+    {% set elementId = 'product-feed-illustration' %}
+    {% set inner_html %}
+       <span class="corner">140 €</span>
+   {% endset %}
+{% elseif id == 3 %}
+    {% set elementId = 'product-campaign' %}
+    {% set inner_html %}
+        <span class="corner">140 €</span>
+    {% endset %}
+{% else %}
+    {% set elementId = '' %}
+    {% set inner_html %}
+        <div></div>
+    {% endset %}
+{% endif %}
+
+{% if link %}
+<div class="col-md-6 col-xs-12 product">
+    <a href="{{path('app_order', {productId: id})}}" class="product-banner" id="{{elementId}}">
+        {{inner_html}}
+    </a>
+</div>
+{% else %}
+<div class="col-xs-12 product">
+    <div class="product-banner" id="{{elementId}}">
+        {{inner_html}}
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
