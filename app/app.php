@@ -139,7 +139,7 @@ $app->register(new Gigablah\Silex\OAuth\OAuthServiceProvider(), array(
         'Facebook' => array(
             'key' => $app['facebook']['key'],
             'secret' => $app['facebook']['secret'],
-            'scope' => array('user_about_me', 'email'),
+            'scope' => array('public_profile', 'email'),
             'user_endpoint' => 'https://graph.facebook.com/me?fields=id,name,email',
         ),
     ),
