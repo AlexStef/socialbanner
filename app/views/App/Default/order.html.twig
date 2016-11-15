@@ -68,7 +68,9 @@
     </div>
     <!-- End brief form -->
 </div>
+
 {% endblock %}
+
 {% block javascripts %}
 {{ parent() }}
 <script>
@@ -81,11 +83,12 @@ var editor = new wysihtml.Editor("wysihtml-brief", { // id of textarea element
 });
 jQuery(document).ready(function()
 {
+  var uploadOptions = {{uploadOptions|raw}};
   Dropzone.autoDiscover = false;
   var briefDropzone = new Dropzone(
     "div#uploadZone",
     {
-      url: "{{ path('partners_upload_file') }}",
+      url: "{{ uploadUrl }}",
       maxFilesize: 50, // MB
       addRemoveLinks: true,
       acceptedFiles: '.jpg,.gif,.jpeg,.png,.pdf,.xls,.xlsx,.ppt,.pptx,.doc,.docx,.doc,.zip,.rar,.ai,.psd,.tiff,.eps,.indd,.ind,.idml,.indt,image/jpg, image/jpeg, image/png, image/gif, application/pdf, application/force-download, application/xls, application/xlsx, application/doc, application/docx, application/ppt, application/pptx,application/postscript, application/octet-stream, image/tiff, image/x-tiff, application/x-compressed, application/x-zip-compressed, application/zip, application/x-rar-compressed, application/x-indesign',
@@ -100,32 +103,40 @@ jQuery(document).ready(function()
   );
   briefDropzone.on("success", function(file) {
     /* Add the file to the input files array */
-    var apiFile = JSON.parse(file.xhr.response);
-    if (apiFile.gid) {
+    var apiFile = decodeURIComponent(file.xhr.getResponseHeader('Location'));
+    if (apiFile) {
       var input = $('input#form_files');
       var files = JSON.parse(input.val());
-      files.push({
-        gid: apiFile.gid
-      });
+      files.push(apiFile);
       input.val(JSON.stringify(files));
     }
   });
   briefDropzone.on("removedfile", function(file) {
     /* Remove the file from the input files array */
-    var apiFile = JSON.parse(file.xhr.response);
-    if (apiFile.gid) {
+    var apiFile = file.name;
+    if (apiFile) {
       var input = $('input#form_files');
       var files = JSON.parse(input.val());
-      var fileToRemove = files.find(function(element) {
-        if (element.gid === apiFile.gid) {
+      var fileToRemoveIndex = files.findIndex(function(element) {
+        if (element.indexOf(apiFile) >= 0) {
           return element;
         }
       });
-      files.splice(files.indexOf(fileToRemove), 1);
+      files.splice(fileToRemoveIndex, 1);
       input.val(JSON.stringify(files));
     }
   });
-  briefDropzone.on("sending", function(file) {
+  briefDropzone.on("sending", function(file, xhr, formData) {
+    /* We need to modify the request before it is sent
+       in order to add authentication data needed to post a file */
+    for(var key in uploadOptions) {
+      if (key === 'key') {
+        // The 'key' input needs to contain filename (instead of placeholder)
+        formData.append(key, uploadOptions[key].replace("${filename}", file.name));
+      } else {
+        formData.append(key, uploadOptions[key]);
+      }
+    }
     /* Disable the form submit button */
     $('button#orderBtn').prop('disabled', true);
   });

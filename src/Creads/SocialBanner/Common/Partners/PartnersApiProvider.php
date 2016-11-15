@@ -49,13 +49,6 @@ class PartnersApiProvider implements ServiceProviderInterface, BootableProviderI
 
             return $client;
         };
-
-        $app['partners.public_token'] = $app->factory(function () use ($app) {
-
-            $authentication = new OAuthAccessToken($app['partners.app_id'], $app['partners.app_secret'], $app['partners.config.connect']);
-
-            return $authentication->getAccessToken('files', true);
-        });
     }
 
     /**

@@ -55,6 +55,9 @@ class DefaultControllerProvider implements ControllerProviderInterface
             }
             $owner = $app['security.token_storage']->getToken()->getUser();
 
+            // Get /me for upload url
+            $me = $app['partners']->get('me');
+
             // Build the brief form
             $form = $app['form.factory']->createBuilder(FormType::class)
             ->add('title', TextType::class, array(
@@ -113,7 +116,15 @@ class DefaultControllerProvider implements ControllerProviderInterface
             }
 
              // display the form
-             return $app['twig']->render('App/Default/order.html.twig', array('form' => $form->createView(), 'productId' => $productId));
+             return $app['twig']->render(
+                'App/Default/order.html.twig',
+                array(
+                    'form' => $form->createView(),
+                    'productId' => $productId,
+                    'uploadUrl' => $me['upload_form']['form_attributes']['action'],
+                    'uploadOptions' => json_encode($me['upload_form']['form_inputs']),
+                    )
+                );
         })
         ->bind('app_order');
 
@@ -147,9 +158,8 @@ class DefaultControllerProvider implements ControllerProviderInterface
                     'comments' => $comments,
                     'commentForm' => $form->createView(),
                     'works' => $works,
-                    'imgBaseUrl' => $app['partners_api']['base_uri'].'img',
-                    'fileBaseUrl' => $app['partners_api']['base_uri'].'dl',
-                    'fileToken' => $app['partners.public_token'],
+                    'imgBaseUrl' => $app['partners_api']['base_uri'].'img', //@todo remove
+                    'fileBaseUrl' => $app['partners_api']['base_uri'].'dl', //@todo remove
                     'needsActivation' => !$project->isPaid(),
                 ]
             );

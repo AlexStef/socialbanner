@@ -176,7 +176,6 @@ if (PHP_SAPI === 'cli') {
 } else {
     $app->mount('', new Creads\SocialBanner\App\Controller\DefaultControllerProvider());
     $app->mount('', new Creads\SocialBanner\App\Controller\PaymentControllerProvider());
-    $app->mount('', new Creads\SocialBanner\App\Controller\PartnersControllerProvider());
 }
 
 return $app;
