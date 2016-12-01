@@ -103,7 +103,7 @@ jQuery(document).ready(function()
   );
   briefDropzone.on("success", function(file) {
     /* Add the file to the input files array */
-    var apiFile = decodeURIComponent(file.xhr.getResponseHeader('Location'));
+    var apiFile = file.xhr.getResponseHeader('Location');
     if (apiFile) {
       var input = $('input#form_files');
       var files = JSON.parse(input.val());

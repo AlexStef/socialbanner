@@ -58,7 +58,7 @@
             <p>{{ 'brief_files'|trans }}</p>
             <ul class="list-unstyled">
               {% for file in project.brief_files %}
-                <li><a href="{{ file }}" download>{{ file|split('/')|last|split('?')|first }}</a></li>
+                <li><a href="{{ file }}" download>{{ file|split('/')|last|split('?')|first|url_decode }}</a></li>
               {% endfor %}
             </ul>
             {% endif %}
@@ -76,7 +76,7 @@
             {% endif %}
             <ul class="list-unstyled">
               {% for file in project.source_files %}
-                <li><a href="{{ file }}" download>{{ file|split('/')|last|split('?')|first }}</a></li>
+                <li><a href="{{ file }}" download>{{ file|split('/')|last|split('?')|first|url_decode }}</a></li>
               {% endfor %}
             </ul>
           </div>

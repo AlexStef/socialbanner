@@ -69,6 +69,9 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->extend('twig', function (Twig_Environment $twig, $app) {
     $twig->addExtension(new Twig_Extensions_Extension_Text());
     $twig->addExtension(new Twig_Extensions_Extension_Date($app['translator']));
+    $twig->addFilter(new Twig_SimpleFilter('url_decode', function ($value) {
+        return urldecode($value);
+    }));
 
     return $twig;
 });

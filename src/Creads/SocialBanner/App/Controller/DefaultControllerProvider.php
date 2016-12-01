@@ -158,8 +158,6 @@ class DefaultControllerProvider implements ControllerProviderInterface
                     'comments' => $comments,
                     'commentForm' => $form->createView(),
                     'works' => $works,
-                    'imgBaseUrl' => $app['partners_api']['base_uri'].'img', //@todo remove
-                    'fileBaseUrl' => $app['partners_api']['base_uri'].'dl', //@todo remove
                     'needsActivation' => !$project->isPaid(),
                 ]
             );
