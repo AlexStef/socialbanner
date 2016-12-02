@@ -164,11 +164,10 @@ class DefaultControllerProvider implements ControllerProviderInterface
             $projectsMap = [];
 
             // We need to build a Partners Query to get all the Projects which Gids are stored for this user
-            // We're going to build a query as a succession of ORs: ['OR', [ <EXPRESSION1>, <EXPRESSION2> , <EXPRESSION3>, ...  ]]
-            // <EXPRESSIONn> being "gid == <the stored gid>"
-            $query = ['OR', []];
+            // We're going to build a query using 'in' operator: ['gid', 'in', [ <GID1>, <GID2> , <GID3>, ...  ]]
+            $query = ['gid', 'in', []];
             foreach ($projects as $key => $project) {
-                $query[1][] = ['gid', '==', $project->getPartnersGid()];
+                $query[2][] = $project->getPartnersGid();
                 $projectsMap[$project->getPartnersGid()] = $project;
             }
 
